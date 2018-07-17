@@ -6,15 +6,16 @@ import LineChart from './components/LineChart'
 import PieChart from './components/PieChart'
 
 class App extends Component {
-  state = {}
-
-  selectDimension = (ndx, by) => ndx.dimension(d => d[by])
+  state = {
+    groupParameter: 'markdown' // markdown || revenues || margin
+  }
 
   async componentDidMount() {
     const data = await d3.csv('data.csv', d => ({
       itemCode: d.Item_code,
       itemCategory: d.item_category,
       date: getDateOfISOWeek(d.week_ref, d.year_ref),
+      week: +d.week_ref,
       markdown: +d.markdown,
       revenues: +d.revenues,
       margin: +d.margin
@@ -23,22 +24,18 @@ class App extends Component {
     console.log(data)
 
     const ndx = crossfilter(data)
-    console.log(ndx)
+    console.log('ndx', ndx)
+    console.log('ndx.all()', ndx.all())
 
-    const dimension = this.selectDimension(ndx, 'markdown')
-    console.log(dimension)
-
-    const group = dimension.group()
-
-    this.setState({ data, ndx, dimension, group })
+    this.setState({ data, ndx })
   }
 
   render() {
-    const { dimension, group } = this.state
+    const { ndx, groupParameter } = this.state
     return (
       <Fragment>
-        <PieChart dimension={dimension} group={group} />
-        <LineChart dimension={dimension} group={group} />
+        <PieChart ndx={ndx} groupParameter={groupParameter}/>
+        <LineChart ndx={ndx} groupParameter={groupParameter} />
       </Fragment>
     )
   }

@@ -14,14 +14,12 @@ class LineChart extends Component {
   onUpdate = () => {
     const { ndx, groupParameter } = this.props
 
-    if (!ndx) return
+    if (!ndx || !groupParameter) return
 
     const dimension = ndx.dimension(d => [d.itemCategory, d.week])
-    const overviewDimension = ndx.dimension(d => [d.itemCategory, d.week])
     console.log('LineChart dimension', dimension)
 
     const group = dimension.group().reduceSum(d => d[groupParameter])
-    const overviewGroup = overviewDimension.group().reduceSum(d => d[groupParameter])
 
     console.log('LineChart group', group)
     console.log('LineChart group.all()', group.all())
@@ -43,7 +41,6 @@ class LineChart extends Component {
       .yAxisLabel(groupParameter)
       .yAxisPadding('5%')
       .xAxisLabel('Week')
-      .clipPadding(10)
       .elasticY(true)
       .dimension(dimension)
       .group(group)
@@ -64,7 +61,7 @@ class LineChart extends Component {
           .itemWidth(70)
       )
 
-    this.chart.margins().left += 180
+    this.chart.margins().left += 100
 
     this.overviewChart
       .width(768)
@@ -74,12 +71,12 @@ class LineChart extends Component {
       .brushOn(true)
       .xAxisLabel('Week')
       .clipPadding(10)
-      .dimension(overviewDimension)
-      .group(overviewGroup)
+      .dimension(dimension)
+      .group(group)
       .seriesAccessor(d => d.key[0])
       .keyAccessor(d => d.key[1])
       .valueAccessor(d => d.value)
-
+    
     this.chart.render()
     this.overviewChart.render()
   }

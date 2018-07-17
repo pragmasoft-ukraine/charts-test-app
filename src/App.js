@@ -4,6 +4,7 @@ import crossfilter from 'crossfilter2'
 import { getDateOfISOWeek } from './helpers'
 import LineChart from './components/LineChart'
 import PieChart from './components/PieChart'
+import ExampleChart from './components/Example'
 
 class App extends Component {
   state = {
@@ -34,7 +35,8 @@ class App extends Component {
     const { ndx, groupParameter } = this.state
     return (
       <Fragment>
-        <PieChart ndx={ndx} groupParameter={groupParameter}/>
+        {/* <ExampleChart /> */ }
+        <PieChart ndx={ndx} groupParameter={groupParameter} />
         <LineChart ndx={ndx} groupParameter={groupParameter} />
       </Fragment>
     )

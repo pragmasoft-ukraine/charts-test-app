@@ -5,6 +5,7 @@ import { getDateOfISOWeek } from './helpers'
 import LineChart from './components/LineChart'
 import PieChart from './components/PieChart'
 import ExampleChart from './components/Example'
+import RechartsChart from './components/RechartsChart'
 
 class App extends Component {
   state = {
@@ -22,20 +23,23 @@ class App extends Component {
       margin: +d.margin
     }))
 
-    console.log(data)
+    console.log('data', data)
 
     const ndx = crossfilter(data)
     console.log('ndx', ndx)
     console.log('ndx.all()', ndx.all())
-
-    this.setState({ data, ndx })
+    ndx.onChange(e => {
+      console.log(ndx.allFiltered())
+    })
+    this.setState({ ndx })
   }
 
   render() {
     const { ndx, groupParameter } = this.state
     return (
       <Fragment>
-        {/* <ExampleChart /> */ }
+        {/* <ExampleChart /> */}
+        {/* <RechartsChart /> */}
         <PieChart ndx={ndx} groupParameter={groupParameter} />
         <LineChart ndx={ndx} groupParameter={groupParameter} />
       </Fragment>

@@ -7,6 +7,7 @@ class PieChart extends Component {
   }
 
   componentDidUpdate() {
+    console.log("PieChart did Update")
     this.onUpdate()
   }
 
@@ -30,6 +31,28 @@ class PieChart extends Component {
       .height(480)
       .dimension(dimension)
       .group(group)
+      .colors([
+        'AliceBlue',
+        'AntiqueWhite',
+        'Aqua',
+        'Aquamarine',
+        'Azure',
+        'Beige',
+        'Bisque',
+        'Black',
+        'BlanchedAlmond',
+        'Blue',
+        'BlueViolet',
+        'Brown',
+        'BurlyWood',
+        'CadetBlue',
+        'Chartreuse',
+        'Chocolate',
+        'Coral',
+        'CornflowerBlue'
+      ])
+      .colorDomain([0, 18])
+      .colorAccessor(d => d.key.charCodeAt(0) - 65)
       .legend(dc.legend())
     // .on('pretransition', function(chart) {
     //   chart.selectAll('text.pie-slice').text(function(d) {

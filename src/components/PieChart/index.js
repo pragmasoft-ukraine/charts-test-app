@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import dc from 'dc'
+import * as d3 from 'd3'
 
 class PieChart extends Component {
   componentDidMount() {
@@ -7,7 +8,6 @@ class PieChart extends Component {
   }
 
   componentDidUpdate() {
-    console.log("PieChart did Update")
     this.onUpdate()
   }
 
@@ -17,11 +17,8 @@ class PieChart extends Component {
     if (!ndx) return
 
     const dimension = ndx.dimension(d => d.itemCategory)
-    console.log('PieChart dimension', dimension)
-
     const group = dimension.group().reduceSum(d => d[groupParameter])
 
-    console.log('PieChart group', group)
     console.log('PieChart group.all()', group.all())
 
     this.chart = dc.pieChart(this.chart)
@@ -31,34 +28,18 @@ class PieChart extends Component {
       .height(480)
       .dimension(dimension)
       .group(group)
-      .colors([
-        'AliceBlue',
-        'AntiqueWhite',
-        'Aqua',
-        'Aquamarine',
-        'Azure',
-        'Beige',
-        'Bisque',
-        'Black',
-        'BlanchedAlmond',
-        'Blue',
-        'BlueViolet',
-        'Brown',
-        'BurlyWood',
-        'CadetBlue',
-        'Chartreuse',
-        'Chocolate',
-        'Coral',
-        'CornflowerBlue'
-      ])
-      .colorDomain([0, 18])
-      .colorAccessor(d => d.key.charCodeAt(0) - 65)
+      .colors(d3.interpolateRainbow)
+      .colorAccessor((d, i) => i / 18) // eslint-disable-line no-unused-vars
+
       .legend(dc.legend())
-    // .on('pretransition', function(chart) {
-    //   chart.selectAll('text.pie-slice').text(function(d) {
-    //     return d.data.key + ' ' + dc.utils.printSingleValue(((d.endAngle - d.startAngle) / (2 * Math.PI)) * 100) + '%'
-    //   })
-    // })
+      .on('pretransition', function(chart) {
+        chart.selectAll('text.pie-slice').text(function(d) {
+          const percent = ((d.endAngle - d.startAngle) / (2 * Math.PI)) * 100
+          return percent >= 7 ? 
+          d.data.key + ' ' + dc.utils.printSingleValue(percent) + '%' 
+          : (percent < 2) ? '' : d.data.key
+        })
+      })
 
     this.chart.render()
   }

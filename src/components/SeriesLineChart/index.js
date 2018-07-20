@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import dc from 'dc'
 import * as d3 from 'd3'
 
-class LineChart extends Component {
+class SeriesLineChart extends Component {
   componentDidMount() {
     this.onUpdate()
   }
@@ -17,12 +17,9 @@ class LineChart extends Component {
     if (!ndx || !groupParameter) return
 
     const dimension = ndx.dimension(d => [d.itemCategory, d.week])
-    console.log('LineChart dimension', dimension)
-
     const group = dimension.group().reduceSum(d => d[groupParameter])
 
-    console.log('LineChart group', group)
-    console.log('LineChart group.all()', group.all())
+    console.log('SeriesLineChart group.all()', group.all())
 
     this.chart = dc.seriesChart(this.chart)
     // this.overviewChart = dc.seriesChart(this.overviewChart)
@@ -30,11 +27,13 @@ class LineChart extends Component {
     this.chart
       .width(768)
       .height(480)
-      .chart(c =>
-        dc
-          .lineChart(c)
-          .curve(d3.curveCardinal)
-          .filterHandler(filterHandler)
+      .chart(
+        c =>
+          dc
+            .lineChart(c)
+            .curve(d3.curveCardinal)
+            .filterHandler(filterHandler)
+        // .colorDomain([0, 18])
       )
       .x(d3.scaleLinear().domain([27, 38]))
       .brushOn(true)
@@ -44,11 +43,15 @@ class LineChart extends Component {
       .elasticY(true)
       .dimension(dimension)
       .group(group)
+      // .colors(d3.interpolateRainbow)
+      // .colorDomain([0, 18])
+      // .colorAccessor((d,i) => (d.key[0].charCodeAt(0) - 65)/ 14)
       .mouseZoomable(true)
       // .rangeChart(this.overviewChart)
       .seriesAccessor(d => d.key[0])
       .keyAccessor(d => d.key[1])
       .valueAccessor(d => d.value)
+      // .seriesSort((a, b) => d3.ascending(a.key, b.key))
       .legend(
         dc
           .legend()
@@ -63,14 +66,12 @@ class LineChart extends Component {
 
     this.chart.filterHandler(filterHandler)
 
-    function filterHandler(dimensions, filters) {
+    function filterHandler(dimensions, filters) { // eslint-disable-line no-unused-vars
       if (filters.length === 0) {
         dimension.filter(null)
       } else {
         var filter = dc.filters.RangedFilter(filters[0][0], filters[0][1])
-        dimension.filterFunction(function(k) {
-          return filter.isFiltered(k[1])
-        })
+        dimension.filterFunction(k => filter.isFiltered(k[1]))
       }
       return filters
     }
@@ -105,4 +106,4 @@ class LineChart extends Component {
   }
 }
 
-export default LineChart
+export default SeriesLineChart

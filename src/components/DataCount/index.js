@@ -26,16 +26,16 @@ class DataCount extends Component {
   render() {
     return (
       <div ref={dataCount => (this.dataCount = dataCount)}>
-        <span class="filter-count" /> selected out of <span class="total-count" /> records |{' '}
-        <a
+        <span className="filter-count" /> selected out of <span className="total-count" />
+        {' records | '}
+        <button
           onClick={() => {
             dc.filterAll()
             dc.renderAll()
           }}
-          href="#"
         >
           Reset All
-        </a>
+        </button>
       </div>
     )
   }

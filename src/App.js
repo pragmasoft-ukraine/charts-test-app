@@ -1,12 +1,13 @@
 import React, { Component, Fragment } from 'react'
 import * as d3 from 'd3'
+import dc from 'dc'
 import crossfilter from 'crossfilter2'
 import { getDateOfISOWeek } from './helpers'
-import LineChart from './components/LineChart'
+import SeriesLineChart from './components/SeriesLineChart'
 import PieChart from './components/PieChart'
 import DataCount from './components/DataCount'
-import ExampleChart from './components/Example'
-import RechartsChart from './components/RechartsChart'
+
+dc.config.defaultColors(d3.schemeCategory10)
 
 class App extends Component {
   state = {
@@ -27,12 +28,8 @@ class App extends Component {
     console.log('data', data)
 
     const ndx = crossfilter(data)
-    console.log('ndx', ndx)
     console.log('ndx.all()', ndx.all())
 
-    ndx.onChange(e => {
-      console.log(ndx.allFiltered())
-    })
     this.setState({ ndx })
   }
 
@@ -44,11 +41,9 @@ class App extends Component {
     const { ndx, groupParameter } = this.state
     return (
       <Fragment>
-        {/* <ExampleChart /> */}
-        {/* <RechartsChart /> */}
         <DataCount ndx={ndx} />
         <PieChart ndx={ndx} groupParameter={groupParameter} />
-        <LineChart ndx={ndx} groupParameter={groupParameter} />
+        <SeriesLineChart ndx={ndx} groupParameter={groupParameter} />
       </Fragment>
     )
   }

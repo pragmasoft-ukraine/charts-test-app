@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import dc from 'dc'
 
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
+
 class DataCount extends Component {
   componentDidMount() {
     this.onUpdate()
@@ -26,16 +29,20 @@ class DataCount extends Component {
   render() {
     return (
       <div ref={dataCount => (this.dataCount = dataCount)}>
-        <span className="filter-count" /> selected out of <span className="total-count" />
-        {' records | '}
-        <button
+        <Typography variant="title" gutterBottom>
+          <span className="filter-count" /> selected out of <span className="total-count" />
+          {' records'}
+        </Typography>
+        <Button
+          color="primary"
           onClick={() => {
             dc.filterAll()
+            dc.refocusAll()
             dc.renderAll()
           }}
         >
           Reset All
-        </button>
+        </Button>
       </div>
     )
   }

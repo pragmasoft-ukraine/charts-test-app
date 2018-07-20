@@ -1,13 +1,29 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import * as d3 from 'd3'
 import dc from 'dc'
 import crossfilter from 'crossfilter2'
+
+import { withStyles } from '@material-ui/core/styles'
+import Grid from '@material-ui/core/Grid'
+
 import { getDateOfISOWeek } from './helpers'
 import SeriesLineChart from './components/SeriesLineChart'
 import PieChart from './components/PieChart'
 import DataCount from './components/DataCount'
+import ParamSelect from './components/ParamSelect'
+import Header from './components/Header'
 
 dc.config.defaultColors(d3.schemeCategory10)
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1
+  },
+  main: {
+    marginTop: 0,
+    padding: `0 ${theme.spacing.unit * 3}px`
+  }
+})
 
 class App extends Component {
   state = {
@@ -33,20 +49,34 @@ class App extends Component {
     this.setState({ ndx })
   }
 
-  updateDataCountChart() {
-
+  changeGropParameter = groupParameter => {
+    if (this.state.groupParameter !== groupParameter) this.setState({ groupParameter })
   }
 
   render() {
+    const { classes } = this.props
     const { ndx, groupParameter } = this.state
+
     return (
-      <Fragment>
-        <DataCount ndx={ndx} />
-        <PieChart ndx={ndx} groupParameter={groupParameter} />
-        <SeriesLineChart ndx={ndx} groupParameter={groupParameter} />
-      </Fragment>
+      <div className={classes.root}>
+        <Header />
+        <Grid className={classes.main} container direction="column" spacing={24}>
+          <Grid item>
+            <DataCount ndx={ndx} />
+          </Grid>
+          <Grid item>
+            <ParamSelect groupParameter={groupParameter} changeGropParameter={this.changeGropParameter} />
+          </Grid>
+          <Grid item>
+            <PieChart ndx={ndx} groupParameter={groupParameter} />
+          </Grid>
+          <Grid item>
+            <SeriesLineChart ndx={ndx} groupParameter={groupParameter} />
+          </Grid>
+        </Grid>
+      </div>
     )
   }
 }
 
-export default App
+export default withStyles(styles)(App)

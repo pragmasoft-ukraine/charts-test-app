@@ -76,7 +76,7 @@ class SeriesLineChart extends Component {
       return filters
     }
 
-    this.chart.margins().left += 100
+    this.chart.margins().left += 120
 
     // this.overviewChart
     //   .width(768)

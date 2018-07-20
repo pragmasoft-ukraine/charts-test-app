@@ -1,4 +1,4 @@
-# Charts test app (React.js + dc.js)
+# Charts Test App (React.js + dc.js)
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 

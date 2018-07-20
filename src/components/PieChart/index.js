@@ -8,6 +8,7 @@ class PieChart extends Component {
   }
 
   componentDidUpdate() {
+    console.log('PieChart did update')
     this.onUpdate()
   }
 
@@ -26,6 +27,7 @@ class PieChart extends Component {
     this.chart
       .width(768)
       .height(480)
+      // .useViewBoxResizing(true)
       .dimension(dimension)
       .group(group)
       .colors(d3.interpolateRainbow)

@@ -4,6 +4,7 @@ import crossfilter from 'crossfilter2'
 import { getDateOfISOWeek } from './helpers'
 import LineChart from './components/LineChart'
 import PieChart from './components/PieChart'
+import DataCount from './components/DataCount'
 import ExampleChart from './components/Example'
 import RechartsChart from './components/RechartsChart'
 
@@ -28,10 +29,15 @@ class App extends Component {
     const ndx = crossfilter(data)
     console.log('ndx', ndx)
     console.log('ndx.all()', ndx.all())
+
     ndx.onChange(e => {
       console.log(ndx.allFiltered())
     })
     this.setState({ ndx })
+  }
+
+  updateDataCountChart() {
+
   }
 
   render() {
@@ -40,6 +46,7 @@ class App extends Component {
       <Fragment>
         {/* <ExampleChart /> */}
         {/* <RechartsChart /> */}
+        <DataCount ndx={ndx} />
         <PieChart ndx={ndx} groupParameter={groupParameter} />
         <LineChart ndx={ndx} groupParameter={groupParameter} />
       </Fragment>

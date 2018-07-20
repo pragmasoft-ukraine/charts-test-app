@@ -34,7 +34,7 @@ class LineChart extends Component {
         dc
           .lineChart(c)
           .curve(d3.curveCardinal)
-          .evadeDomainFilter(true)
+          .filterHandler(filterHandler)
       )
       .x(d3.scaleLinear().domain([27, 38]))
       .brushOn(true)
@@ -61,18 +61,19 @@ class LineChart extends Component {
           .itemWidth(70)
       )
 
-    this.chart.filterHandler(function(dim, filters) {
-      console.log('filter works')
-      if (filters && filters.length) {
-        if (filters.length !== 1) throw new Error('not expecting more than one range filter')
-        var range = filters[0]
-        dim.filterFunction(function(i) {
-          return !(i[1] < range[0] || i[0] > range[1])
+    this.chart.filterHandler(filterHandler)
+
+    function filterHandler(dimensions, filters) {
+      if (filters.length === 0) {
+        dimension.filter(null)
+      } else {
+        var filter = dc.filters.RangedFilter(filters[0][0], filters[0][1])
+        dimension.filterFunction(function(k) {
+          return filter.isFiltered(k[1])
         })
-      } else dim.filterAll()
-      console.log('filters', filters)
+      }
       return filters
-    })
+    }
 
     this.chart.margins().left += 100
 

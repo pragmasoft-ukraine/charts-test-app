@@ -12,6 +12,13 @@ class PieChart extends Component {
     this.onUpdate()
   }
 
+  pretransitionHandler = chart => {
+    chart.selectAll('text.pie-slice').text(function(d) {
+      const percent = ((d.endAngle - d.startAngle) / (2 * Math.PI)) * 100
+      return percent >= 7 ? d.data.key + ' ' + dc.utils.printSingleValue(percent) + '%' : percent < 2 ? '' : d.data.key
+    })
+  }
+
   onUpdate = () => {
     const { ndx, groupParameter } = this.props
 
@@ -34,14 +41,7 @@ class PieChart extends Component {
       .colorAccessor((d, i) => i / 18) // eslint-disable-line no-unused-vars
 
       .legend(dc.legend())
-      .on('pretransition', function(chart) {
-        chart.selectAll('text.pie-slice').text(function(d) {
-          const percent = ((d.endAngle - d.startAngle) / (2 * Math.PI)) * 100
-          return percent >= 7 ? 
-          d.data.key + ' ' + dc.utils.printSingleValue(percent) + '%' 
-          : (percent < 2) ? '' : d.data.key
-        })
-      })
+      .on('pretransition', this.pretransitionHandler)
 
     this.chart.render()
   }

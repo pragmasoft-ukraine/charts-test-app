@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import dc from 'dc'
 import * as d3 from 'd3'
 
+import apply_resizing from '../../helpers/dc-resizing'
+
 class PieChart extends Component {
   componentDidMount() {
     this.onUpdate()
@@ -32,9 +34,12 @@ class PieChart extends Component {
 
     this.chart = dc.pieChart(this.chart)
 
+    const adjustX = 200,
+      adjustY = 400
+
     this.chart
-      .width(768)
-      .height(480)
+      .width(window.innerWidth - adjustX)
+      .height(window.innerHeight - adjustY)
       // .useViewBoxResizing(true)
       .dimension(dimension)
       .group(group)
@@ -43,6 +48,8 @@ class PieChart extends Component {
 
       .legend(dc.legend())
       .on('pretransition', this.pretransitionHandler)
+
+    apply_resizing(this.chart, adjustX, adjustY)
 
     this.chart.render()
   }

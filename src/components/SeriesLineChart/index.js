@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react'
 import dc from 'dc'
 import * as d3 from 'd3'
 
+import apply_resizing from '../../helpers/dc-resizing'
+
 class SeriesLineChart extends Component {
   componentDidMount() {
     this.onUpdate()
@@ -24,9 +26,10 @@ class SeriesLineChart extends Component {
     this.chart = dc.seriesChart(this.chart)
     // this.overviewChart = dc.seriesChart(this.overviewChart)
 
+    const adjustX = 20,
+      adjustY = 40
+
     this.chart
-      .width(768)
-      .height(480)
       .chart(
         c =>
           dc
@@ -63,6 +66,8 @@ class SeriesLineChart extends Component {
           .legendWidth(140)
           .itemWidth(70)
       )
+
+    apply_resizing(this.chart, adjustX, adjustY)
 
     this.chart.filterHandler(filterHandler)
 

@@ -16,7 +16,7 @@ class SeriesLineChart extends Component {
 
     if (!ndx || !groupParameter) return
 
-    const dimension = ndx.dimension(d => [d.itemCategory, d.week])
+    const dimension = ndx.dimension(d => [d.itemCategory, d.date])
     const group = dimension.group().reduceSum(d => d[groupParameter])
 
     console.log('SeriesLineChart group.all()', group.all())
@@ -35,7 +35,7 @@ class SeriesLineChart extends Component {
             .filterHandler(filterHandler)
         // .colorDomain([0, 18])
       )
-      .x(d3.scaleLinear().domain([27, 38]))
+      .x(d3.scaleTime().domain([new Date(2015, 6, 6, 0), new Date(2015, 8, 21, 0)]))
       .brushOn(true)
       .yAxisLabel(groupParameter)
       .yAxisPadding('5%')

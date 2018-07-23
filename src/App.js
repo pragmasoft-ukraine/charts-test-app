@@ -34,8 +34,7 @@ class App extends Component {
     const data = await d3.csv('data.csv', d => ({
       itemCode: d.Item_code,
       itemCategory: d.item_category,
-      date: getDateOfISOWeek(d.week_ref, d.year_ref),
-      week: +d.week_ref,
+      date: getDateOfISOWeek(d.year_ref, d.week_ref),
       markdown: +d.markdown,
       revenues: +d.revenues,
       margin: +d.margin

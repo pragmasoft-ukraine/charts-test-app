@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
@@ -40,6 +41,11 @@ class ParamSelect extends Component {
       </FormControl>
     )
   }
+}
+
+ParamSelect.propTypes = {
+  groupParameter: PropTypes.string.isRequired,
+  changeGropParameter: PropTypes.func.isRequired
 }
 
 export default ParamSelect

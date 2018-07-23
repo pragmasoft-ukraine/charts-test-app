@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import dc from 'dc'
 import * as d3 from 'd3'
 
@@ -49,6 +50,11 @@ class PieChart extends Component {
   render() {
     return <div ref={chart => (this.chart = chart)} />
   }
+}
+
+PieChart.propTypes = {
+  ndx: PropTypes.object,
+  groupParameter: PropTypes.string.isRequired
 }
 
 export default PieChart

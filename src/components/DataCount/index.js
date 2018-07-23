@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import dc from 'dc'
 
 import Button from '@material-ui/core/Button'
@@ -46,6 +47,10 @@ class DataCount extends Component {
       </div>
     )
   }
+}
+
+DataCount.propTypes = {
+  ndx: PropTypes.object
 }
 
 export default DataCount

@@ -35,7 +35,7 @@ class SeriesLineChart extends Component {
             .filterHandler(filterHandler)
         // .colorDomain([0, 18])
       )
-      .x(d3.scaleTime().domain([new Date(2015, 6, 6, 0), new Date(2015, 8, 21, 0)]))
+      .x(d3.scaleTime().domain(d3.extent(group.all(), d => d.key[1])))
       .brushOn(true)
       .yAxisLabel(groupParameter)
       .yAxisPadding('5%')
@@ -66,7 +66,8 @@ class SeriesLineChart extends Component {
 
     this.chart.filterHandler(filterHandler)
 
-    function filterHandler(dimensions, filters) { // eslint-disable-line no-unused-vars
+    function filterHandler(dimensions, filters) {
+      // eslint-disable-line no-unused-vars
       if (filters.length === 0) {
         dimension.filter(null)
       } else {
